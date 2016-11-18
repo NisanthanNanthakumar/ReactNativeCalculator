@@ -1,4 +1,6 @@
-mport {StyleSheet} from 'react-native';
+'use strict';
+
+import { StyleSheet } from 'react-native';
 
 var Style = StyleSheet.create({
   rootContainer: {
@@ -18,7 +20,6 @@ var Style = StyleSheet.create({
     textAlign: 'right',
     padding: 20
   },
-
 
   inputContainer: {
     flex: 8,

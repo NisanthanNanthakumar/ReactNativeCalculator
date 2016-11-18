@@ -13,17 +13,18 @@ const inputButtons = [
   [7, 8, 9, '-'],
   [4, 5, 6, '+'],
   [1, 2, 3, '()'],
-  [0, '.', '+/-','=']
+  [0, '.', '^','=']
 ];
 
 class ReactNativeCalculator extends Component {
-
+//Holds the state
     constructor(props) {
         super(props);
 
         this.state = {
             displayValue: '',
-            bracketCount: 0
+            bracketCount: 0,
+            memory: ''
         }
     }
 
@@ -40,14 +41,15 @@ class ReactNativeCalculator extends Component {
         )
     }
 
+// Takes each row from inputButtons array, creates an InputButton for each input in the row, and then pushes the row of InputButtons into the row View.
     renderInputButtons() {
         let views = [];
 
-        for (var r = 0; r < inputButtons.length; r ++) {
+        for (let r = 0; r < inputButtons.length; r ++) {
             let row = inputButtons[r];
 
             let inputRow = [];
-            for (var i = 0; i < row.length; i ++) {
+            for (let i = 0; i < row.length; i ++) {
                 let input = row[i];
 
                 inputRow.push(
@@ -64,6 +66,7 @@ class ReactNativeCalculator extends Component {
         return views;
     }
 
+//When the calculator button is pressed, checks what is pressed and then passes it on to the appropriate function
     onInputButtonPressed(input) {
         switch (typeof input) {
             case 'number':
@@ -72,6 +75,7 @@ class ReactNativeCalculator extends Component {
                 return this.handleStringInput(input)
         }
     }
+
 
     handleNumberInput(num) {
         if (this.state.displayValue.slice(-1)===')') {
@@ -98,14 +102,12 @@ class ReactNativeCalculator extends Component {
                 break;
 
             case '=':
-
-                let expression = this.state.displayValue;
-                let calculation = parseFloat(eval(expression)).toString();
-
-                this.setState({
-                    displayValue: calculation
-                });
-                break;
+              let expression = this.state.displayValue;
+              let calculation = parseFloat(eval(expression)).toString();
+              this.setState({
+                  displayValue: calculation
+              });
+              break;
             case '.':
               this.setState({
                 displayValue: this.state.displayValue + str
@@ -127,7 +129,7 @@ class ReactNativeCalculator extends Component {
               if (displayLastChar===')' && this.state.bracketCount === 0){
                 this.setState({
                   displayValue: this.state.displayValue + '*(',
-                  bracketCount: this.state.count + 1
+                  bracketCount: this.state.bracketCount + 1
                 });
               }
               else if (displayLastChar===')' && this.state.bracketCount >0){
@@ -151,17 +153,22 @@ class ReactNativeCalculator extends Component {
               else if (this.state.displayValue.charCodeAt(displayLength-1)===42 || this.state.displayValue.charCodeAt(displayLength-1)===43 || this.state.displayValue.charCodeAt(displayLength-1)===45 || this.state.displayValue.charCodeAt(displayLength-1)===47) {
                 this.setState({
                   displayValue: this.state.displayValue + '(',
-                  count: this.state.bracketCount + 1
+                  bracketCount: this.state.bracketCount + 1
                 });
               }
               else if (this.state.bracketCount > 0) {
                 this.setState({
                   displayValue: this.state.displayValue + ')',
-                  count: this.state.bracketCount - 1
+                  bracketCount: this.state.bracketCount - 1
                 });
               }
               break;
-            case '+/-':
+            case '^':
+              this.setState({
+                displayValue: this.state.displayValue + '^(',
+                bracketCount: this.state.bracketCount + 1
+              })
+
         }
     }
 
