@@ -168,7 +168,7 @@ class ReactNativeCalculator extends Component {
                 displayValue: this.state.displayValue + '^(',
                 bracketCount: this.state.bracketCount + 1
               })
-
+              break;
         }
     }
 
